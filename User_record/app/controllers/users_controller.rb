@@ -11,11 +11,11 @@ class UsersController < ApplicationController
 	end 
 	
 	def create 
-		user = User.create(users_params)
-		if user.save
-			render json: user
+		@user = User.create(users_params)
+		if @user.save
+			render json: @user
 		else 
-			render json: {erros: user.error.full_messages}
+			render json: { mesasge: @user.errors.full_messages  }
 		end
 	end
 	
