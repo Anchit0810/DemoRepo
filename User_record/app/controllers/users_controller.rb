@@ -1,34 +1,47 @@
 class UsersController < ApplicationController
 
+	before_action :set_user , except: [:create,:index]
+
+	# skip_before_action :set_user, only: [:index,:create]
+
  	def index
-		users = User.all
- 		render json: users
+		@users = User.all
+ 		render json: @users
  	end
 
  	def show
-		user = User.find(params[:id])
-		render json: user
+		# @user
+		# user = User.find(params[:id])
+		render json: @user
 	end 
 	
 	def create 
-		@user = User.create(users_params)
+		@user = User.new(users_params)
 		if @user.save
 			render json: @user
 		else 
-			render json: { mesasge: @user.errors.full_messages  }
+			render json: { message: @user.errors.full_messages  }
 		end
 	end
 	
 	def update 
-	user = User.find(params[:id])
-	user.update(users_params)
-	render json: user 	
+		# @user 
+ 	 	# user = User.find(params[:id])
+	 	if  @user.update(users_params)
+		 	render json: @user
+		else
+			render json: {message: @user.errors.full_messages}
+		end	
 	end
 
 	def destroy
-	user = User.find(params[:id])
-	user.destroy
-	render json: {mesasge: "user delete succefully"}	
+		# @user
+		# user = User.find(params[:id])
+		if @user.destroy
+	 		render json: {message: "user delete succefully"}
+		else 
+			render json: {message: @user.errors.full_messages}	
+		end
 	end
 
 
@@ -37,4 +50,14 @@ class UsersController < ApplicationController
 		params.permit(:first_name,:last_name,:email,:country_code,:mobile_number,:country,:state,:city)
 	end
 
+	def set_user
+		@user = User.find_by(id: params[:id])
+		unless @user.present?
+			render json: {message: "user not found "}
+		end
+	end
+
+
+
 end
+
