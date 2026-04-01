@@ -15,6 +15,6 @@ class User < ApplicationRecord
   
   validates :state , presence: true , format: {with: /\A[a-zA-Z]+\z/}
   
-  validates :state , presence: true , format: {with: /\A[a-zA-Z]+\z/}
+  validates :city , presence: true , format: {with: /\A[a-zA-Z]+\z/}
 
 end
