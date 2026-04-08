@@ -10,19 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_07_053424) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_08_094733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "movies", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.interval "duration"
-    t.string "imdb_rating"
-    t.string "language"
-    t.string "movie_category"
-    t.string "movie_genre"
-    t.string "movie_name"
+    t.string "duration"
+    t.decimal "imdb_rating", precision: 2, scale: 1, null: false
+    t.string "language", null: false
+    t.string "movie_category", null: false
+    t.string "movie_genre", null: false
+    t.string "movie_name", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shows", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "movie_id", null: false
+    t.datetime "show_time"
+    t.bigint "theater_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_shows_on_movie_id"
+    t.index ["theater_id"], name: "index_shows_on_theater_id"
   end
 
   create_table "theaters", force: :cascade do |t|
@@ -31,4 +41,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_053424) do
     t.string "theater_name"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "shows", "movies"
+  add_foreign_key "shows", "theaters"
 end

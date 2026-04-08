@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  movie: one
+  theater: one
+  show_time: 2026-04-08 15:17:33
+
+two:
+  movie: two
+  theater: two
+  show_time: 2026-04-08 15:17:33
