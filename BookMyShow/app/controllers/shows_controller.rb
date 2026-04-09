@@ -3,36 +3,37 @@ class ShowsController < ApplicationController
 before_action :set_show , except: [:create, :index]  
 
   def index
-    @show = Show.all
-    render json: @show , status: :ok
+    @shows = Show.all
+    render json: @shows , status: :ok
   end
 
   def show 
-    render json: @show , status: :ok
+    render json: @shows , status: :ok
   end
 
-  def create 
-    @show = Show.new(shows_params)
-    if @show.save 
-      render json: @show , status: :created
+  def create
+    @shows = Show.new(shows_params)
+    if @shows.save 
+      render json: @shows , status: :created
     else 
-      render json: { message: @show.errors.full_messages } , status: :unprocessable_entity
+      puts @shows.errors.full_messages
+      render json: { message: @shows.errors.full_messages } , status: :unprocessable_entity
     end
   end
 
   def update 
-    if @show.update(show_params)
-      render json: @show , status: :ok
+    if @shows.update(shows_params)
+      render json: @shows , status: :ok
     else 
-      render json: {message: @show.errors.full_messages}, status: :unprocessable_entity
+      render json: {message: @shows.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
 	def destroy
-		if @show.destroy
-	 		render json: {message: 'show delete succefully'} , status: :ok
+		if @shows.destroy
+	 		render json: {message: 'show deleted succefully'} , status: :ok
 		else 
-			render json: {message: @show.errors.full_messages} , status: :unprocessable_entity	
+			render json: {message: @shows.errors.full_messages} , status: :unprocessable_entity	
 		end
 	end
  
@@ -40,13 +41,14 @@ before_action :set_show , except: [:create, :index]
   private 
 
   def shows_params
-    params.permit(:show_time,:movie_id,:theater_id)
+    params.permit(:show_time , :movie_id , :theater_id ) 
   end
 
   def set_show
-    @show = show.find_by(id: params[:id])
-    unless @show.present? 
+    @shows = Show.find_by(id: params[:id])
+    unless @shows.present? 
       render json: {message: 'Show not present'} , status: :not_found
+      return
     end
   end
 

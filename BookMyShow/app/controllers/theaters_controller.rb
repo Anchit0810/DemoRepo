@@ -30,7 +30,7 @@ class TheatersController < ApplicationController
 
 	def destroy
 		if @theater.destroy
-	 		render json: {message: 'movie delete succefully'} , status: :ok
+	 		render json: {message: 'Theater deleted succefully'} , status: :ok
 		else 
 			render json: {message: @theater.errors.full_messages} , status: :unprocessable_entity	
 		end
@@ -47,6 +47,7 @@ class TheatersController < ApplicationController
     @theater = Theater.find_by(id: params[:id])
     unless @theater.present? 
       render json: {message: 'Theater not present'} , status: :not_found
+      return
     end
   end
 
