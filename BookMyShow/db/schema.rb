@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_080442) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_092952) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "cities", force: :cascade do |t|
+    t.string "city_name"
+    t.datetime "created_at", null: false
+    t.string "state"
+    t.datetime "updated_at", null: false
+    t.index ["city_name", "state"], name: "index_cities_on_city_name_and_state", unique: true
+  end
 
   create_table "movies", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -37,13 +45,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_080442) do
   end
 
   create_table "theaters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "city_id", null: false
     t.datetime "created_at", null: false
     t.string "theater_location"
     t.string "theater_name"
     t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_theaters_on_city_id"
     t.index ["theater_name", "theater_location"], name: "index_theaters_on_theater_name_and_theater_location", unique: true
   end
 
   add_foreign_key "shows", "movies"
   add_foreign_key "shows", "theaters"
+  add_foreign_key "theaters", "cities"
 end

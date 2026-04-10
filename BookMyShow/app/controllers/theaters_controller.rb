@@ -1,10 +1,16 @@
 class TheatersController < ApplicationController
 
-     before_action :set_theater , except: [:create, :index]  
+  before_action :set_theater , except: [:create, :index]  
 
-  def index
-    @theater = Theater.all
+  def index 
+
+    if params[:city_id]
+      @theater = Theater.where(city_id: params[:city_id])
+    else 
+      @theater = Theater.all
+    end
     render json: @theater , status: :ok
+
   end
 
   def show 
@@ -40,7 +46,7 @@ class TheatersController < ApplicationController
   private 
 
   def theater_params
-    params.permit(:theater_name,:theater_location )
+    params.permit(:city_id , :theater_name,:theater_location )
   end
 
   def set_theater

@@ -20,11 +20,4 @@ class Movie < ApplicationRecord
 
   validates :language, presence: true, inclusion: { in: VALID_LANGUAGE, message: "Not a valid language category"  }
 
-
-  private 
-  def duration_conversion
- 
-  end
-
-
 end
