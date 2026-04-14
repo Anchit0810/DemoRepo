@@ -3,11 +3,14 @@ class TheatersController < ApplicationController
   before_action :set_theater , except: [:create, :index]  
 
   def index 
+    if params[:city_name].present?
 
-    if params[:city_id]
-      @theater = Theater.where(city_id: params[:city_id])
+      @theater = Theater.joins(:city).where(cities: {city_name: params[:city_name].downcase})
+    
     else 
+      puts "hello ji"
       @theater = Theater.all
+    
     end
     render json: @theater , status: :ok
 
@@ -46,7 +49,7 @@ class TheatersController < ApplicationController
   private 
 
   def theater_params
-    params.permit(:city_id , :theater_name,:theater_location )
+    params.permit(:city_id, :theater_name,:theater_location )
   end
 
   def set_theater

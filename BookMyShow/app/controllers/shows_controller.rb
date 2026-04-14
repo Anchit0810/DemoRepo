@@ -3,7 +3,11 @@ class ShowsController < ApplicationController
 before_action :set_show , except: [:create, :index]  
 
   def index
-    @shows = Show.all
+    if params[:theater_name].present?
+      @shows = Show.joins(:theater).where(theaters: {theater_name: params[:theater_name].downcase})
+    else  
+      @shows = Show.all
+    end
     render json: @shows , status: :ok
   end
 
