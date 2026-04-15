@@ -4,7 +4,7 @@ class CreateShows < ActiveRecord::Migration[8.1]
     create_table :shows do |t|
       t.references :movie, null: false, foreign_key: true 
       t.references :theater, null: false, foreign_key: true , type: :uuid
-      t.datetime :show_time , index: {unique: true}
+      t.datetime :show_time 
 
       t.timestamps
     end

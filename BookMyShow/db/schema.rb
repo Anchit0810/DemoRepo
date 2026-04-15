@@ -39,6 +39,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.string "seat_number"
     t.bigint "show_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["seat_number"], name: "index_seats_on_seat_number", unique: true
     t.index ["show_id"], name: "index_seats_on_show_id"
   end
 
@@ -59,7 +60,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.string "theater_name"
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_theaters_on_city_id"
-    t.index ["theater_name", "theater_location"], name: "index_theaters_on_theater_name_and_theater_location", unique: true
+    t.index ["theater_name", "theater_location"], name: "index_theaters_on_theater_name_and_theater_location"
   end
 
   create_table "users", force: :cascade do |t|
@@ -69,7 +70,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.datetime "updated_at", null: false
     t.string "user_email"
     t.string "user_name"
-    t.integer "user_number"
+    t.string "user_number"
+    t.index ["user_email"], name: "index_users_on_user_email", unique: true
+    t.index ["user_number"], name: "index_users_on_user_number", unique: true
   end
 
   add_foreign_key "seats", "shows"
