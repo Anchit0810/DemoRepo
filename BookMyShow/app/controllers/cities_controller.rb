@@ -1,37 +1,37 @@
 class CitiesController < ApplicationController
-    before_action :set_city , except: [:create, :index]  
+    before_action :set_city , only: [:show, :update , :destroy]  
 
   def index
     @cities = City.all
-    render json: @cities , status: :ok
+    render 'index' , status: :ok
   end
 
   def show 
-    render json: @cities , status: :ok
+    render 'show' , status: :ok
   end
 
   def create 
-    @cities = City.new(cities_params)
-    if @cities.save 
-      render json: @cities , status: :created
+    @city = City.new(cities_params)
+    if @city.save 
+      render json: @city , status: :created
     else 
-      render json: { message: @cities.errors.full_messages } , status: :unprocessable_entity
+      render json: { message: @city.errors.full_messages } , status: :unprocessable_entity
     end
   end
 
   def update 
-    if @cities.update(cities_params)
-      render json: @cities , status: :ok
+    if @city.update(cities_params)
+      render json: @city , status: :ok
     else 
-      render json: {message: @cities.error.full_messages}, status: :unprocessable_entity
+      render json: {message: @city.error.full_messages}, status: :unprocessable_entity
     end
   end
 
 	def destroy
-		if @cities.destroy
+		if @city.destroy
 	 		render json: {message: 'cities delete succefully'} , status: :ok
 		else 
-			render json: {message: @cities.errors.full_messages} , status: :unprocessable_entity	
+			render json: {message: @city.errors.full_messages} , status: :unprocessable_entity	
 		end
 	end
  
@@ -43,8 +43,8 @@ class CitiesController < ApplicationController
   end
 
   def set_city
-    @cities  = City.find_by(id: params[:id])
-    unless @cities.present? 
+    @city  = City.find_by(id: params[:id])
+    unless @city.present? 
       render json: {message: 'City not present'} , status: :not_found
     end
   end

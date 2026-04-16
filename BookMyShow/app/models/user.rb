@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
     validates :user_number , presence: true , format: {with: /\A[3-9]{1}[0-9]{9}\z/ , message: 'only digits allowed' }
     
-    validates :user_email , presence: true , format: { with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/ , message: 'enter only valid email' }
+    validates :user_email , presence: true , format: { with: URI::MailTo::EMAIL_REGEXP , message: 'enter only valid email' }
     
     validates :active , presence: true , inclusion: { in: VALID_ACTIVE_ENTRY , message: 'invalid entry' }
 

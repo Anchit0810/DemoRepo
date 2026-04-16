@@ -5,19 +5,19 @@ class TheatersController < ApplicationController
   def index 
     if params[:city_name].present?
 
-      @theater = Theater.joins(:city).where(cities: {city_name: params[:city_name].downcase})
+      @theaters = Theater.joins(:city).where(cities: {city_name: params[:city_name].downcase})
     
     else 
       puts "hello ji"
-      @theater = Theater.all
+      @theaters = Theater.all
     
     end
-    render json: @theater , status: :ok
+    render  'index' , status: :ok
 
   end
 
   def show 
-    render json: @theater , status: :ok
+    render 'show' , status: :ok
   end
 
   def create 

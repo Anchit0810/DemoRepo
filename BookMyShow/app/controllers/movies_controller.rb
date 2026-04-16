@@ -4,11 +4,11 @@ class MoviesController < ApplicationController
 
   def index
     @movie = Movie.all
-    render json: @movie , status: :ok
+    render 'index' , status: :ok
   end
 
   def show 
-    render json: @movie , status: :ok
+    render 'show' , status: :ok
   end
 
   def create 

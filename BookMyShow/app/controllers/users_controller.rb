@@ -1,39 +1,39 @@
 class UsersController < ApplicationController
 
-  before_action :set_user , except: [:create, :index]  
+  before_action :set_user , only: [:show , :update , :destroy]  
 
   def index 
     @users = User.all
-    render json: @users , status: :ok
+    render 'anchit' #, status: :ok
 
   end
 
   def show 
-    render json: @users , status: :ok
+    render 'anchit' #, status: :ok
   end
 
   def create 
-    @users = User.new(user_params)
-    if @users.save 
-      render json: @users , status: :created
+    @user = User.new(user_params)
+    if @user.save 
+      render json: @user , status: :created
     else 
-      render json: { message: @users.errors.full_messages } , status: :unprocessable_entity
+      render json: { message: @user.errors.full_messages } , status: :unprocessable_entity
     end
   end
 
   def update 
-    if @users.update(user_params)
-      render json: @users , status: :ok
+    if @user.update(user_params)
+      render json: @user  , status: :ok
     else 
-      render json: {message: @users.errors.full_messages}, status: :unprocessable_entity
+      render json: {message: @user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
 	def destroy
-		if @users.destroy
+		if @user.destroy
 	 		render json: {message: 'user deleted succefully'} , status: :ok
 		else 
-			render json: {message: @users.errors.full_messages} , status: :unprocessable_entity	
+			render json: {message: @user.errors.full_messages} , status: :unprocessable_entity	
 		end
 	end
  
@@ -45,8 +45,8 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @users = User.find_by(id: params[:id])
-    unless @users.present? 
+    @user = User.find_by(id: params[:id])
+    unless @user.present? 
       render json: {message: 'user not present'} , status: :not_found
       return
     end
