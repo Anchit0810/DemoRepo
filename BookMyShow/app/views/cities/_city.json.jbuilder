@@ -1,1 +1,4 @@
-json.extract! city , :id , :city_name , :state
+json.(city , :id)
+json.sheher_ka_name city.city_name
+json.(city ,:state)
+ 
