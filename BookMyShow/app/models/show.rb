@@ -2,6 +2,9 @@ class Show < ApplicationRecord
  belongs_to :movie
  belongs_to :theater
 
+ has_many :bookings 
+ 
+
  has_many :seats , dependent: :destroy 
 
  after_create :generate_seats

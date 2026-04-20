@@ -1,5 +1,7 @@
 class User < ApplicationRecord
 
+    has_many :bookings 
+
     enum :role , { admin_user: 0 , normal_user: 1 }  
 
     VALID_ACTIVE_ENTRY = [ true , false ]

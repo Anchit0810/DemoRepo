@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_111237) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "booking_seats", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "seat_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_booking_seats_on_booking_id"
+    t.index ["seat_id"], name: "index_booking_seats_on_seat_id"
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "show_id", null: false
+    t.decimal "total_price"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["show_id"], name: "index_bookings_on_show_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string "city_name"
@@ -39,7 +58,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.string "seat_number"
     t.bigint "show_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["seat_number"], name: "index_seats_on_seat_number", unique: true
+    t.index ["seat_number"], name: "index_seats_on_seat_number"
     t.index ["show_id"], name: "index_seats_on_show_id"
   end
 
@@ -60,7 +79,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.string "theater_name"
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_theaters_on_city_id"
-    t.index ["theater_name", "theater_location"], name: "index_theaters_on_theater_name_and_theater_location"
+    t.index ["theater_name", "theater_location"], name: "index_theaters_on_theater_name_and_theater_location", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -75,6 +94,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_14_101140) do
     t.index ["user_number"], name: "index_users_on_user_number", unique: true
   end
 
+  add_foreign_key "booking_seats", "bookings"
+  add_foreign_key "booking_seats", "seats"
+  add_foreign_key "bookings", "shows"
+  add_foreign_key "bookings", "users"
   add_foreign_key "seats", "shows"
   add_foreign_key "shows", "movies"
   add_foreign_key "shows", "theaters"

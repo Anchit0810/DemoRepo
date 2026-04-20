@@ -11,7 +11,7 @@ class CreateTheaters < ActiveRecord::Migration[8.1]
    
     end
     
-    add_index :theaters, [:theater_name , :theater_location]
+    add_index :theaters, [:theater_name , :theater_location] , unique: true
   
   end
 
