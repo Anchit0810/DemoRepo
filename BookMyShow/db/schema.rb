@@ -39,6 +39,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_111237) do
     t.datetime "created_at", null: false
     t.string "state"
     t.datetime "updated_at", null: false
+    t.index ["city_name", "state"], name: "index_cities_on_city_name_and_state", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
