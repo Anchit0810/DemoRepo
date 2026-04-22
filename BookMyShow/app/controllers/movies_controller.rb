@@ -44,7 +44,7 @@ class MoviesController < ApplicationController
   end
 
   def set_movie
-    @movie = Movie.find_by(id: params[:id])
+    @movie = Movie.find_by(movies_params)
     unless @movie.present? 
       render json: {message: 'Movie not present'} , status: :not_found
     end

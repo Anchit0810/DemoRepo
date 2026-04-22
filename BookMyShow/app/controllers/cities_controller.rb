@@ -12,7 +12,13 @@ class CitiesController < ApplicationController
 
   def create 
     @city = City.new(cities_params)
-    if @city.save 
+    pp @city.city_name
+    pp @city.state
+    pp cities_params
+    pp City.exists?(city_name: @city.city_name, state: @city.state)
+    if City.exists?(city_name: @city.city_name.downcase, state: @city.state.downcase)
+      render json: {errors: 'Already exists!'}
+    elsif @city.save 
       render json: @city , status: :created
     else 
       render json: { message: @city.errors.full_messages } , status: :unprocessable_entity

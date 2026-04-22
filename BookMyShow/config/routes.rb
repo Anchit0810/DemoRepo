@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "users/create"
   get "users/update"
   get "users/destroy"
-  get "users/idex"
+  get "users/index"
   get "test/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # resources :movies 
@@ -22,8 +22,11 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   # get "/users/", to: "users#anchit"
   # get '/seats' to: ''
-  get '/bookings', to: 'bookings#index'
+  # get '/bookings', to: 'bookings#index'
+  # get '/bookings/:id', to: 'bookings#show'
+  
   get '/booking_seats', to: 'booking_seats#index'
+  
   
   get "/movies", to: "movies#index"
   get "/movies/:id", to: "movies#show"
