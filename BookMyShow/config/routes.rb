@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   resources :theaters
   resources :shows
   resources :cities
-  resources :users 
+  resources :users do
+    resources :bookings, only: [:index]
+  end
   resources :seats
 
   get "/seats/:seat_number", to: 'seats#find_seat_by_seat_number'
@@ -23,7 +25,7 @@ Rails.application.routes.draw do
   # get "/users/", to: "users#anchit"
   # get '/seats' to: ''
   # get '/bookings', to: 'bookings#index'
-  # get '/bookings/:id', to: 'bookings#show'
+  # destroy '/bookings/:id', to: 'bookings#destroy'
   
   get '/booking_seats', to: 'booking_seats#index'
   

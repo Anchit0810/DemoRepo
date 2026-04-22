@@ -4,6 +4,9 @@ class BookingsController < ApplicationController
   def index
     @bookings = Booking.all
     # @bookings = Booking.where(id: params[:id])
+    if params[:id].present? 
+      @bookings = Booking.where(id: params[:id])
+    end
     if params[:show_id].present?
       @bookings = Booking.where(show_id: params[:show_id])
     end  
@@ -79,6 +82,6 @@ class BookingsController < ApplicationController
     end
 
     def booking_params
-      params.permit(:user_id , :show_id , seat_ids:[])
+      params.permit(:id, :user_id , :show_id , seat_ids:[])
     end
 end
