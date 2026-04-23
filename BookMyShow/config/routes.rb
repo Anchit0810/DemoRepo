@@ -11,12 +11,13 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # resources :movies 
   resources :theaters
+  # put '/theaters/:city_id', to: 'theaters#update'
   resources :shows
   resources :cities
-  resources :users do
-    resources :bookings, only: [:index]
-  end
+  resources :users
+  post '/login', to: 'users#login'
   resources :seats
+
 
   get "/seats/:seat_number", to: 'seats#find_seat_by_seat_number'
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -28,13 +29,13 @@ Rails.application.routes.draw do
   # destroy '/bookings/:id', to: 'bookings#destroy'
   
   get '/booking_seats', to: 'booking_seats#index'
-  
-  
+
   get "/movies", to: "movies#index"
   get "/movies/:id", to: "movies#show"
   post "/movies", to: "movies#create"
   patch "/movies/:id" , to: "movies#update"
   put "/movies/:id" , to: "movies#update"
+  delete '/movies/:id', to: 'movies#destroy'
 
 
   # Defines the root path route ("/")

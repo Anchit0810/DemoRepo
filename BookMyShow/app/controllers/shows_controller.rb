@@ -1,14 +1,22 @@
 class ShowsController < ApplicationController
 
-before_action :set_show , except: [:create, :index]  
+ before_action :set_show , except: [:create, :index]  
 
   def index
+    @shows = Show.all
+    
+    if params[:id].present?
+      @shows = Show.where(id: params[:id])
+    end
+
+    if params[:theater_id].present? 
+      @shows = Show.where(theater_id: params[:theater_id])
+    end
+
     if params[:theater_name].present?
       @shows = Show.joins(:theater).where(theaters: {theater_name: params[:theater_name].downcase})
-    else  
-      @shows = Show.all
-    end
-    render json: @shows , status: :ok
+    end 
+    render json: @shows  , status: :ok
   end
 
   def show 
@@ -16,28 +24,28 @@ before_action :set_show , except: [:create, :index]
   end
 
   def create
-    @shows = Show.new(shows_params)
-    if @shows.save 
-      render json: @shows , status: :created
+    @show = Show.new(shows_params)
+    if @show.save 
+      render json: @show , status: :created
     else 
-      puts @shows.errors.full_messages
-      render json: { message: @shows.errors.full_messages } , status: :unprocessable_entity
+      puts @show.errors.full_messages
+      render json: { message: @show.errors.full_messages } , status: :unprocessable_entity
     end
   end
 
   def update 
-    if @shows.update(shows_params)
-      render json: @shows , status: :ok
+    if @show.update(shows_params)
+      render json: @show , status: :ok
     else 
-      render json: {message: @shows.errors.full_messages}, status: :unprocessable_entity
+      render json: {message: @show.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
 	def destroy
-		if @shows.destroy
+		if @show.destroy
 	 		render json: {message: 'show deleted succefully'} , status: :ok
 		else 
-			render json: {message: @shows.errors.full_messages} , status: :unprocessable_entity	
+			render json: {message: @show.errors.full_messages} , status: :unprocessable_entity	
 		end
 	end
  

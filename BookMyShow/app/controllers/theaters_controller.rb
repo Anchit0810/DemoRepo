@@ -30,7 +30,8 @@ class TheatersController < ApplicationController
   end
 
   def update 
-    if @theater.update(theater_params)
+    if params[:city_id].present?
+      @theater.update(theater_params)
       render json: @theater , status: :ok
     else 
       render json: {message: @theater.errors.full_messages}, status: :unprocessable_entity

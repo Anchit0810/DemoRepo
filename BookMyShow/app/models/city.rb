@@ -2,7 +2,7 @@ class City < ApplicationRecord
     has_many :theaters
 
     before_validation :downcase_city_name_and_location
-    
+  
     # before_create :downcase_city_name_and_location
     
     validates :city_name , presence: true ,format: { with: /\A[a-zA-Z\s]+\z/ , message: "only letters and spaces allowed"}
@@ -16,10 +16,10 @@ class City < ApplicationRecord
         self.state = state.downcase.strip
     end 
     
-    def valid_city_state
-        unless City.exists?(city_name: @city.city_name, state: @city.state)
-            errors.add("Already exists! ")
-        end
-    end
+    # def valid_city_state
+    #     unless City.exists?(city_name: self.city_name, state: self.state)
+    #         errors.add(:city, "Already exists! #{state}")
+    #     end
+    # end
 
 end

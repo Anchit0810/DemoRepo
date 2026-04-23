@@ -30,7 +30,7 @@ class MoviesController < ApplicationController
 
 	def destroy
 		if @movie.destroy
-	 		render json: {message: 'movie delete succefully'} , status: :ok
+	 		render json: {message: 'movie delete successfully'} , status: :ok
 		else 
 			render json: {message: @movie.errors.full_messages} , status: :unprocessable_entity	
 		end
@@ -44,7 +44,7 @@ class MoviesController < ApplicationController
   end
 
   def set_movie
-    @movie = Movie.find_by(movies_params)
+    @movie = Movie.find_by(id: params[:id])
     unless @movie.present? 
       render json: {message: 'Movie not present'} , status: :not_found
     end

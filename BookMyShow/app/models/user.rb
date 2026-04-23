@@ -1,5 +1,7 @@
 class User < ApplicationRecord
 
+    has_secure_password
+
     has_many :bookings 
 
     enum :role , { admin_user: 0 , normal_user: 1 }  
