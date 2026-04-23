@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_093136) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_191532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -55,7 +55,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_093136) do
 
   create_table "seats", force: :cascade do |t|
     t.boolean "booked", default: false
+    t.string "category"
     t.datetime "created_at", null: false
+    t.decimal "price"
     t.string "seat_number"
     t.bigint "show_id", null: false
     t.datetime "updated_at", null: false

@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_action :set_booking, only: %i[ show update destroy ]
   puts " hello anchit"
+  
   def index
     @bookings = Booking.all
     # @bookings = Booking.where(id: params[:id])
@@ -11,8 +12,7 @@ class BookingsController < ApplicationController
       @bookings = Booking.where(show_id: params[:show_id])
     end  
     if params[:user_id].present? 
-      @bookings = Booking.joins(:user).joins(show:[:movie,:theater]).where(user_id: params[:user_id])
-                                                                                  
+      @bookings = Booking.joins(:user).joins(show:[:movie,:theater]).where(user_id: params[:user_id])                                                                             
     end
     render 'index', status: :ok
   end
@@ -77,11 +77,12 @@ class BookingsController < ApplicationController
   end
 
   private  
-    def set_booking
-      @booking = Booking.find(params[:id])
-    end
+  def set_booking
+    @booking = Booking.find(params[:id])
+  end
 
-    def booking_params
-      params.permit(:id, :user_id , :show_id , seat_ids:[])
-    end
+  def booking_params
+    params.permit(:id, :user_id , :show_id , seat_ids:[])
+  end
+  
 end
