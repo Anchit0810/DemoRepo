@@ -16,13 +16,39 @@ class Show < ApplicationRecord
  private
    
   def generate_seats
-    rows = ['A', 'B' , 'C' , 'D' , 'E' ]
+    rows = ('A'..'J').to_a 
+    numbers = (1..10).to_a
 
     rows.each do |row|
-      (1..10).each do |number|
-        seats.create(seat_number: "#{row}#{number}")
+      numbers.each do |num|
+        category = 
+        if ['A','B','C'].include?(row)
+          'silver'
+        elsif['D','E','F'].include?(row)
+          'gold'
+        else 
+          'platinum'
+        end
+
+        price = 
+        case category
+        when 'platinum'
+          300
+        when 'gold'
+          250
+        else
+          150
+        end
+        
+        Seat.create(seat_number: "#{row}#{num}",
+                    show_id: show.id,
+                    category: category,
+                    price: price ,
+                    booked: false
+        )
       end
     end
+    
   end
 
 end

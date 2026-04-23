@@ -3,9 +3,11 @@ class Movie < ApplicationRecord
   has_many :shows
   has_many :theaters, through: :shows 
 
-  VALID_GENRES = [ "Action", "Comedy", "Romantic", "Thriller", "Drama", "Horror", "Sci-fi", "Documentary", "Family", "Fantasy", "Biopic", "Animated" ]
-  VALID_CATEGORY = [ "U/A 7+", "U/A 12+", "U/A 16+", "A" ]
-  VALID_LANGUAGE = [ "hindi", "english", "tamil", "telugu" ]
+  before_validation :downcase_movie_language_genre
+
+  VALID_GENRES = [ 'action', 'comedy', 'romantic', 'thriller', 'drama', 'horror', 'sci-fi', 'documentary', 'family', 'fantasy', 'biopic', 'animated' ]
+  VALID_CATEGORY = [ 'U/A 7+', 'U/A 12+', 'U/A 16+', 'A' ]
+  VALID_LANGUAGE = [ 'hindi', 'english', 'tamil', 'telugu' ]
 
 
   validates :movie_name, presence: true, format: { with: /\A[a-zA-Z\s]+\z/ , message: 'only letters and spaces allowed'}
@@ -21,3 +23,9 @@ class Movie < ApplicationRecord
   validates :language, presence: true, inclusion: { in: VALID_LANGUAGE, message: 'Not a valid language category'  }
 
 end
+
+  def downcase_movie_language_genre
+    self.movie_genre = movie_genre.downcase.strip
+    self.language = language.downcase.strip
+  end 
+

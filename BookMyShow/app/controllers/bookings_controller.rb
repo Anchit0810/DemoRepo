@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
   before_action :set_booking, only: %i[ show update destroy ]
-
+  puts " hello anchit"
   def index
     @bookings = Booking.all
     # @bookings = Booking.where(id: params[:id])
@@ -27,7 +27,7 @@ class BookingsController < ApplicationController
  
   def create
 
-    # ActiveRecord::Base.transaction do
+    ActiveRecord::Base.transaction do
 
     @seats = Seat.where(id: params[:seat_ids] , show_id: params[:show_id])
 
@@ -41,7 +41,7 @@ class BookingsController < ApplicationController
       return
     end
 
-    total_price = @seats.count * 150
+    total_price = @seats.sum(:price)
 
     @booking = Booking.create!(user_id: booking_params[:user_id],
                                show_id: booking_params[:show_id],
