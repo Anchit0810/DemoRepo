@@ -10,6 +10,11 @@
  json.movie movie.movie_name 
  json.theater theater.theater_name
  json.theater theater.theater_location
+ seat = booking.seats
+#json.seat_no seat.seat_number
+ json.seats booking.seats.pluck(:seat_number).join(',')
+#     json.seat_no seat.seat_number
+#  end
 # json.extract! booking, :user_name  , :user_email , :movie_name , :theater_name , :theater_location , :show_time
 
 

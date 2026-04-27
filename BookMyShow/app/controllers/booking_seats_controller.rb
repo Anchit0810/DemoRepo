@@ -5,10 +5,8 @@ class BookingSeatsController < ApplicationController
     @booking_seats = BookingSeat.all
   end
 
-
   def show
   end
-
 
   def create
     @booking_seat = BookingSeat.new(booking_seat_params)
@@ -19,14 +17,6 @@ class BookingSeatsController < ApplicationController
       render json: @booking_seat.errors, status: :unprocessable_entity
     end
   end
-
-
-
-
-
-
-
-
   
   def update
     if @booking_seat.update(booking_seat_params)
@@ -35,7 +25,6 @@ class BookingSeatsController < ApplicationController
       render json: @booking_seat.errors, status: :unprocessable_entity
     end
   end
-
 
   def destroy
     @booking_seat.destroy!

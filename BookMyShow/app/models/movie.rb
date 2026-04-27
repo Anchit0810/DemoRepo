@@ -7,7 +7,7 @@ class Movie < ApplicationRecord
 
   VALID_GENRES = [ 'action', 'comedy', 'romantic', 'thriller', 'drama', 'horror', 'sci-fi', 'documentary', 'family', 'fantasy', 'biopic', 'animated' ]
   VALID_CATEGORY = [ 'U/A 7+', 'U/A 12+', 'U/A 16+', 'A' ]
-  VALID_LANGUAGE = [ 'hindi', 'english', 'tamil', 'telugu' ]
+  VALID_LANGUAGE = [ 'hindi', 'english', 'tamil', 'telugu', 'marathi' ]
 
 
   validates :movie_name, presence: true, format: { with: /\A[a-zA-Z\s]+\z/ , message: 'only letters and spaces allowed'}

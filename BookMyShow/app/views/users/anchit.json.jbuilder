@@ -1,6 +1,3 @@
-# json.ABCD @user.user_name
-json.array! @users do |i|
-    json.partial! 'user', user: i 
-end
+json.array! @users , partial: 'user/users' , as: :user
  
  

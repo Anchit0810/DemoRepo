@@ -1,20 +1,25 @@
 Rails.application.routes.draw do
   resources :booking_seats
   resources :bookings
-  get "users/idex"
-  get "users/show"
-  get "users/create"
-  get "users/update"
-  get "users/destroy"
-  get "users/index"
-  get "test/index"
+  resources :users 
+
+ 
+  # get "users/idex"
+  # get "users/show"
+  # get "users/create"
+  # get "users/update"
+  # get "users/destroy"
+  # get "users/index"
+  # get "test/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # resources :movies 
   resources :theaters
   # put '/theaters/:city_id', to: 'theaters#update'
   resources :shows
   resources :cities
-  resources :users
+  # resources :users
+  # get '/users/:id', to: 'users#show'
+  # get '/users/:user_email', to: 'users#show'
   post '/login', to: 'users#login'
   resources :seats
 

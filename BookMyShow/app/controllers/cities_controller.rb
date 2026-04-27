@@ -3,6 +3,12 @@ class CitiesController < ApplicationController
 
   def index
     @cities = City.all
+    if params[:city_name].present? 
+      @cities = City.where(city_name: params[:city_name])
+    end 
+    if params[:state].present? 
+      @citites = City.where(sate: params[:state])
+    end
     render 'index' , status: :ok
   end
 

@@ -41,7 +41,7 @@ class Show < ApplicationRecord
         end
         
         Seat.create(seat_number: "#{row}#{num}",
-                    show_id: show.id,
+                    show_id: self.id,
                     category: category,
                     price: price ,
                     booked: false

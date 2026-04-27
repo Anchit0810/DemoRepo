@@ -1,15 +1,33 @@
 class UsersController < ApplicationController
   
-  before_action :set_user , only: [:show , :update , :destroy]  
+  before_action :set_user , only: [:update , :destroy]  
 
   def index 
     @users = User.all
-    render 'anchit' #, status: :ok
+    if params[:user_id].present? 
+      @users = User.where(id: params[:user_id])
+    end
+    if params[:user_email].present? 
+      @users = User.where(user_email: params[:user_email])
+    end
+    if params[:user_number].present? 
+      @users = User.where(user_number: params[:user_number])
+    end
+    render 'index' , status: :ok
 
   end
 
   def show 
-    render 'anchit' #, status: :ok
+    # if params[:user_id].present? 
+    #   @user = User.where(id: params[:user_id])
+    # end
+    # if params[:user_email].present? 
+    #   @user = User.where(user_email: params[:user_email])
+    # end
+    # if params[:user_number].present? 
+    #   @user = User.where(user_number: params[:user_number])
+    # end
+    # render json: @user #, status: :ok
   end
 
   def create 
