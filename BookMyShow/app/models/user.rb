@@ -16,4 +16,6 @@ class User < ApplicationRecord
     
     validates :active , presence: true , inclusion: { in: VALID_ACTIVE_ENTRY , message: 'invalid entry' }
 
+    validates :password , length: {in: 6..10}, on: :create , on: :update 
+    
 end

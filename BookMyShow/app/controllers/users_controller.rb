@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     end
     render 'index' , status: :ok
 
-  end
+  end   
 
   def show 
     # if params[:user_id].present? 

@@ -35,6 +35,8 @@ Rails.application.routes.draw do
   
   get '/booking_seats', to: 'booking_seats#index'
 
+  # delete 'booking', to: 'booking#cancel_booking' 
+
   get "/movies", to: "movies#index"
   get "/movies/:id", to: "movies#show"
   post "/movies", to: "movies#create"

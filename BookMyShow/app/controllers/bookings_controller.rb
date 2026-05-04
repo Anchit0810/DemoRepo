@@ -43,30 +43,58 @@ class BookingsController < ApplicationController
                                  show_id: booking_params[:show_id],
                                  total_price: total_price
       )
+
       @seats.each do |seat|
         seat.update!(booked: true)
         BookingSeat.create!(booking_id: @booking.id,seat_id: seat.id)
       end
+
     end
+
     render json: @booking , status: :created
+
   end
 
   def update
+
     if @booking.update(booking_params)
       render :show, status: :ok, location: @booking
     else
       render json: @booking.errors, status: :unprocessable_entity
     end
+
   end
   
 
   def destroy
+    
+    # if params[:id].present? 
+    #   @booking = Booking.where(id: params[:id])
+    # end
+
     @booking.seats.each do |seat|
       seat.update!(booked: false)
     end 
     @booking.destroy
-    render json: {message: " booking cancelled"} , status: :ok
+    render json:  {message: "this booking cancelled"}, status: :ok
+
   end
+
+  # def cancel_booking
+  #   @booking = Booking.find_by(id: params[:id])
+
+  #   if @booking.nil?
+  #     render json: {message: "booking not present"}, status: :not_found
+  #     return
+  #   end
+  #   @booking.seats.each do |seat|
+  #     seat.update!(booked: false)
+  #   end 
+  #   @booking.destroy
+  #   render json: @booking , {message: "this booking cancelled"} , status: :ok
+
+  # end
+
 
   private  
   def set_booking
