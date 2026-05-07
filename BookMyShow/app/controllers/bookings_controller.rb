@@ -1,7 +1,6 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: %i[ show update destroy ]
+  before_action :set_booking, only: [ :show, :update, :destroy ]
   before_action :authenticate_user
-  puts " hello anchit"
   
   def index
     @bookings = Booking.all
@@ -52,7 +51,7 @@ class BookingsController < ApplicationController
 
     end
 
-    render json: @booking , status: :created
+    render :show , status: :created
 
   end
 
@@ -68,10 +67,12 @@ class BookingsController < ApplicationController
   
 
   def destroy
-    
-    # if params[:id].present? 
-    #   @booking = Booking.where(id: params[:id])
-    # end
+
+    @booking = Booking.find_by(params[:id])
+    if @booking.user_id != @current_user.id
+      render json: {error: 'you are not authorized'}
+      return
+    end 
 
     @booking.seats.each do |seat|
       seat.update!(booked: false)
