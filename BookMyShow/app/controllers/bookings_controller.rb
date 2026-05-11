@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [ :show, :update, :destroy ]
+  before_action :set_booking, only: [ :show, :update]
   before_action :authenticate_user
   
   def index
@@ -23,8 +23,6 @@ class BookingsController < ApplicationController
  
   def create
 
-    ActiveRecord::Base.transaction do
-
       @seats = Seat.where(id: params[:seat_ids] , show_id: params[:show_id])
 
       if @seats.count != params[:seat_ids].length
@@ -32,22 +30,32 @@ class BookingsController < ApplicationController
         return
       end
 
-      if @seats.any? {|seat| seat.booked}
-        render json: {message: 'some seats already booked'},status: :unprocessable_entity
-        return
-      end
+      booked_seats = @seats.where(booked: true)
+
+      return render json: {message: 'some seats already booked', taken_seats: booked_seats},status: :unprocessable_entity unless booked_seats.empty?
+
+      # if @seats.any? {|seat| seat.booked}
+      #   render json: {message: 'some seats already booked'},status: :unprocessable_entity
+      #   return
+      # end
 
       total_price = @seats.sum(:price)
 
-      @booking = Booking.create!(user_id: booking_params[:user_id],
-                                 show_id: booking_params[:show_id],
-                                 total_price: total_price
-      )
+    ActiveRecord::Base.transaction do
 
+
+
+      @booking = Booking.create!(user_id: booking_params[:user_id],
+                                  show_id: booking_params[:show_id],
+                                  total_price: total_price
+      )
+      @seats.update_all(booked: true)
       @seats.each do |seat|
-        seat.update!(booked: true)
-        BookingSeat.create!(booking_id: @booking.id,seat_id: seat.id)
+        # seat.update!(booked: true)
+        booking_seats << { booking_id: @booking.id, seat_id: seat.id }
+        # BookingSeat.create!(booking_id: @booking.id,seat_id: seat.id)
       end
+      BookingSeat.insert_all(booking_seats)
 
     end
 
@@ -67,8 +75,12 @@ class BookingsController < ApplicationController
   
 
   def destroy
-
-    @booking = Booking.find_by(params[:id])
+    pp "hello world"
+    @booking = Booking.find_by(id: params[:id])
+    pp "hiii"
+    pp @booking
+    pp @booking.class
+    pp " anchit"
     if @booking.user_id != @current_user.id
       render json: {error: 'you are not authorized'}
       return

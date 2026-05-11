@@ -1,2 +1,2 @@
-json.array! @booking, partial: "booking/booking", as: :booking
+json.array! @bookings, partial: "bookings/booking", as: :booking
 
