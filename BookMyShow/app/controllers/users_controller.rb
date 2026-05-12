@@ -5,14 +5,17 @@ class UsersController < ApplicationController
 
   def index 
     @users = User.all
-    if params[:user_id].present? 
-      @users = User.where(id: params[:user_id])
-    end
-    if params[:user_email].present? 
-      @users = User.where(user_email: params[:user_email])
-    end
-    if params[:user_number].present? 
-      @users = User.where(user_number: params[:user_number])
+    
+    @users = User.where(id: params[:user_id])  if params[:user_id].present? 
+
+     
+    @users = User.where(user_email: params[:user_email]) if params[:user_email].present?
+    
+    @users = User.where(user_number: params[:user_number])  if params[:user_number].present?
+     
+    if @users.blank? 
+      render json: {messsage: 'user not found'}, status: :not_found
+      return
     end
     render 'index' , status: :ok
 

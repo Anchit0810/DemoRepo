@@ -75,12 +75,7 @@ class BookingsController < ApplicationController
   
 
   def destroy
-    pp "hello world"
     @booking = Booking.find_by(id: params[:id])
-    pp "hiii"
-    pp @booking
-    pp @booking.class
-    pp " anchit"
     if @booking.user_id != @current_user.id
       render json: {error: 'you are not authorized'}
       return
