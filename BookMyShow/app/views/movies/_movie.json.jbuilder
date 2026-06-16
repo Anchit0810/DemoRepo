@@ -1,0 +1,1 @@
+json.extract! movie , :id , :movie_name ,  :movie_genre , :movie_category , :imdb_rating , :duration , :language

@@ -1,0 +1,117 @@
+class BookingsController < ApplicationController
+  before_action :set_booking, only: [ :show, :update]
+  before_action :authenticate_user
+  
+  def index
+    @bookings = Booking.all
+    # @bookings = Booking.where(id: params[:id])
+    if params[:id].present? 
+      @bookings = Booking.where(id: params[:id])
+    end
+    if params[:show_id].present?
+      @bookings = Booking.where(show_id: params[:show_id])
+    end  
+    if params[:user_id].present? 
+      @bookings = Booking.joins(:user).joins(show:[:movie,:theater]).where(user_id: params[:user_id])                                                                             
+    end
+    render 'index', status: :ok
+  end
+
+  def show 
+     
+  end
+ 
+  def create
+
+      @seats = Seat.where(id: params[:seat_ids] , show_id: params[:show_id])
+
+      if @seats.count != params[:seat_ids].length
+        render json: {message: 'invalid seat selections'}, status: :unprocessable_entity
+        return
+      end
+
+      booked_seats = @seats.where(booked: true)
+
+      return render json: {message: 'some seats already booked', taken_seats: booked_seats},status: :unprocessable_entity unless booked_seats.empty?
+
+      # if @seats.any? {|seat| seat.booked}
+      #   render json: {message: 'some seats already booked'},status: :unprocessable_entity
+      #   return
+      # end
+
+      total_price = @seats.sum(:price)
+
+    ActiveRecord::Base.transaction do
+
+
+
+      @booking = Booking.create!(user_id: booking_params[:user_id],
+                                  show_id: booking_params[:show_id],
+                                  total_price: total_price
+      )
+      @seats.update_all(booked: true)
+      @seats.each do |seat|
+        # seat.update!(booked: true)
+        booking_seats << { booking_id: @booking.id, seat_id: seat.id }
+        # BookingSeat.create!(booking_id: @booking.id,seat_id: seat.id)
+      end
+      BookingSeat.insert_all(booking_seats)
+
+    end
+
+    render :show , status: :created
+
+  end
+
+  def update
+
+    if @booking.update(booking_params)
+      render :show, status: :ok, location: @booking
+    else
+      render json: @booking.errors, status: :unprocessable_entity
+    end
+
+  end
+  
+
+  def destroy
+    @booking = Booking.find_by(id: params[:id])
+    if @booking.user_id != @current_user.id
+      render json: {error: 'you are not authorized'}
+      return
+    end 
+
+    @booking.seats.each do |seat|
+      seat.update!(booked: false)
+    end 
+    @booking.destroy
+    render json:  {message: "this booking cancelled"}, status: :ok
+
+  end
+
+  # def cancel_booking
+  #   @booking = Booking.find_by(id: params[:id])
+
+  #   if @booking.nil?
+  #     render json: {message: "booking not present"}, status: :not_found
+  #     return
+  #   end
+  #   @booking.seats.each do |seat|
+  #     seat.update!(booked: false)
+  #   end 
+  #   @booking.destroy
+  #   render json: @booking , {message: "this booking cancelled"} , status: :ok
+
+  # end
+
+
+  private  
+  def set_booking
+    @booking = Booking.find(params[:id])
+  end
+
+  def booking_params
+    params.permit(:id, :user_id, :show_id, seat_ids: [] )
+  end
+  
+end
